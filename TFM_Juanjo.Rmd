@@ -5,6 +5,8 @@ date: "08/22/2017"
 output: html_document
 ---
 
+First, let's edit rbcl tree
+
 ```{r}
 library(ape)
 
@@ -27,5 +29,31 @@ plot(rbcltree2)
 write.tree(rbcltree2, file = "edited_rbcl.tree")
 
 
+```
+
+Now matk tree
+
+```{r}
+
+
+library(ape)
+
+matktree <- read.nexus("matk_raxml_tree.nex") 
+plot(matktree, cex = 0.5)
+mytiplabels <- read.csv("Muestras ordenadas.csv")
+mytiplabels <- mytiplabels[1:118,]
+mytiplabels
+mytiplabels[,4] <- paste("s", mytiplabels[,4], sep="")
+mytiplabels
+matktree$tip.label <- paste("s", matktree$tip.label, sep="")
+matktree$tip.label
+mytiplabels2 <- mytiplabels[,4]
+names(mytiplabels2) = paste(mytiplabels[,5],mytiplabels[,6], mytiplabels[,7], sep="_")
+mytiplabels2
+names(mytiplabels2)[match(matktree$tip.label,mytiplabels2)]
+matktree2 <- matktree
+matktree2$tip.label <- names(mytiplabels2)[match(matktree$tip.label,mytiplabels2)]
+plot(matktree2)
+write.tree(matktree2, file = "edited_matk.tree")
 ```
 
