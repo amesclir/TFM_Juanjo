@@ -8,7 +8,7 @@ output: html_document
 ```{r}
 library(ape)
 
-rbcltree <- read.nexus("RBCL.nex") 
+rbcltree <- read.nexus("rbcl_raxml_tree.nex") 
 plot(rbcltree, cex = 0.5)
 mytiplabels <- read.csv("Muestras ordenadas.csv")
 mytiplabels <- mytiplabels[1:118,]
