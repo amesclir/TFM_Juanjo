@@ -57,3 +57,27 @@ plot(matktree2)
 write.tree(matktree2, file = "edited_matk.tree")
 ```
 
+ITS
+```{r}
+
+library(ape)
+
+ITStree <- read.nexus("ITS_raxml_tree.nex") 
+plot(ITStree, cex = 0.5)
+mytiplabels <- read.csv("Muestras ordenadas.csv")
+mytiplabels <- mytiplabels[1:118,]
+mytiplabels
+mytiplabels[,4] <- paste("s", mytiplabels[,4], sep="")
+mytiplabels
+ITStree$tip.label <- paste("s", ITStree$tip.label, sep="")
+ITStree$tip.label
+mytiplabels2 <- mytiplabels[,4]
+names(mytiplabels2) = paste(mytiplabels[,5],mytiplabels[,6], mytiplabels[,7], sep="_")
+mytiplabels2
+names(mytiplabels2)[match(ITStree$tip.label,mytiplabels2)]
+ITStree2 <- ITStree
+ITStree2$tip.label <- names(mytiplabels2)[match(ITStree$tip.label,mytiplabels2)]
+plot(ITStree2)
+write.tree(ITStree2, file = "edited_ITS.tree")
+```
+
