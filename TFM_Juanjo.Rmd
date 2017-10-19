@@ -81,3 +81,82 @@ plot(ITStree2)
 write.tree(ITStree2, file = "edited_ITS.tree")
 ```
 
+
+
+
+
+First, let's edit rbcl tree
+
+```{r}
+library(ape)
+
+rbcltree <- read.nexus("rbcl_raxml_tree.nex") 
+plot(rbcltree, cex = 0.5)
+mytiplabels <- read.csv("Muestras ordenadas.csv")
+mytiplabels <- mytiplabels[1:118,]
+mytiplabels
+mytiplabels[,4] <- paste("s", mytiplabels[,4], sep="")
+mytiplabels
+rbcltree$tip.label <- paste("s", rbcltree$tip.label, sep="")
+rbcltree$tip.label
+mytiplabels2 <- mytiplabels[,4]
+names(mytiplabels2) = paste(mytiplabels[,4],mytiplabels[,5],mytiplabels[,6], mytiplabels[,7], sep="_")
+mytiplabels2
+names(mytiplabels2)[match(rbcltree$tip.label,mytiplabels2)]
+rbcltree2 <- rbcltree
+rbcltree2$tip.label <- names(mytiplabels2)[match(rbcltree$tip.label,mytiplabels2)]
+plot(rbcltree2)
+write.tree(rbcltree2, file = "edited_rbcl2.tree")
+
+
+```
+
+Now matk tree
+
+```{r}
+
+
+library(ape)
+
+matktree <- read.nexus("matk_raxml_tree.nex") 
+plot(matktree, cex = 0.5)
+mytiplabels <- read.csv("Muestras ordenadas.csv")
+mytiplabels <- mytiplabels[1:118,]
+mytiplabels
+mytiplabels[,4] <- paste("s", mytiplabels[,4], sep="")
+mytiplabels
+matktree$tip.label <- paste("s", matktree$tip.label, sep="")
+matktree$tip.label
+mytiplabels2 <- mytiplabels[,4]
+names(mytiplabels2) = paste(mytiplabels[,4],mytiplabels[,5],mytiplabels[,6], mytiplabels[,7], sep="_")
+mytiplabels2
+names(mytiplabels2)[match(matktree$tip.label,mytiplabels2)]
+matktree2 <- matktree
+matktree2$tip.label <- names(mytiplabels2)[match(matktree$tip.label,mytiplabels2)]
+plot(matktree2)
+write.tree(matktree2, file = "edited_matk2.tree")
+```
+
+ITS
+```{r}
+
+library(ape)
+
+ITStree <- read.nexus("ITS_raxml_tree.nex") 
+plot(ITStree, cex = 0.5)
+mytiplabels <- read.csv("Muestras ordenadas.csv")
+mytiplabels <- mytiplabels[1:118,]
+mytiplabels
+mytiplabels[,4] <- paste("s", mytiplabels[,4], sep="")
+mytiplabels
+ITStree$tip.label <- paste("s", ITStree$tip.label, sep="")
+ITStree$tip.label
+mytiplabels2 <- mytiplabels[,4]
+names(mytiplabels2) = paste(mytiplabels[,4],mytiplabels[,5],mytiplabels[,6], mytiplabels[,7], sep="_")
+mytiplabels2
+names(mytiplabels2)[match(ITStree$tip.label,mytiplabels2)]
+ITStree2 <- ITStree
+ITStree2$tip.label <- names(mytiplabels2)[match(ITStree$tip.label,mytiplabels2)]
+plot(ITStree2)
+write.tree(ITStree2, file = "edited_ITS2.tree")
+```
