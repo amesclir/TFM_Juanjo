@@ -160,3 +160,28 @@ ITStree2$tip.label <- names(mytiplabels2)[match(ITStree$tip.label,mytiplabels2)]
 plot(ITStree2)
 write.tree(ITStree2, file = "edited_ITS2.tree")
 ```
+
+
+all
+```{r}
+
+library(ape)
+
+alltree <- read.nexus("all_raxml_tree.nex") 
+plot(alltree, cex = 0.5)
+mytiplabels <- read.csv("Muestras ordenadas.csv")
+mytiplabels <- mytiplabels[1:118,]
+mytiplabels
+mytiplabels[,4] <- paste("s", mytiplabels[,4], sep="")
+mytiplabels
+alltree$tip.label <- paste("s", alltree$tip.label, sep="")
+alltree$tip.label
+mytiplabels2 <- mytiplabels[,4]
+names(mytiplabels2) = paste(mytiplabels[,4],mytiplabels[,5],mytiplabels[,6], mytiplabels[,7], sep="_")
+mytiplabels2
+names(mytiplabels2)[match(alltree$tip.label,mytiplabels2)]
+alltree2 <- alltree
+alltree2$tip.label <- names(mytiplabels2)[match(alltree$tip.label,mytiplabels2)]
+plot(alltree2)
+write.tree(alltree2, file = "edited_all2.tree")
+```
