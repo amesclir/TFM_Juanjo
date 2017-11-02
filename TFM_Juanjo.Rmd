@@ -185,3 +185,82 @@ alltree2$tip.label <- names(mytiplabels2)[match(alltree$tip.label,mytiplabels2)]
 plot(alltree2)
 write.tree(alltree2, file = "edited_all2.tree")
 ```
+
+
+Phylogenetic diversity analyses
+```{r}
+#1. LOADING DATA
+
+
+library(picante)
+library(phytools)
+
+mytree<- read.nexus("all_raxml_tree.nex") 
+plot(mytree, cex = 0.4)
+mytree<-root(mytree, c("43","99"))
+plot(mytree, cex = 0.4)
+
+mydata <- read.csv("matriz numerica ANALISIS TFM.csv", header = T, row.names = 1) 
+mydata
+
+mytree$tip.label
+mytree$tip.label <- paste("s", mytree$tip.label, sep="")
+setdiff(colnames(mydata), mytree$tip.label)
+setdiff(mytree$tip.label, colnames(mydata))
+tipstoremove <- setdiff(mytree$tip.label, colnames(mydata))
+mytree <- drop.tip(mytree, tipstoremove)
+
+phy <- mytree
+comm <- mydata
+
+comm <- as.matrix(comm)
+class(comm)
+colnames(comm)
+rownames(comm)
+
+#2. visualizing trees and data
+
+prunedphy <- prune.sample(comm, phy)
+prunedphy
+
+par(mfrow = c(2, 2))
+for (i in row.names(comm))
+{
+plot(prunedphy, show.tip.label = FALSE, main = i)
+tiplabels(tip = which(prunedphy$tip.label %in% names(which(comm[i, ] >
+0))), pch = 19, cex = 1)
+}
+
+#3. Community phylogenetic structure
+#3.1 Phylogenetic diversity
+pd.result <- pd(comm, phy, include.root = F)
+pd.result
+write.table(pd.result, file="pd.result.txt")
+
+
+#3.2.2  MPD, MNTD, SES MPD and SES MNT D
+phydist <- cophenetic(phy)
+ses.mpd.result <- ses.mpd(comm, phydist, null.model = "taxa.labels",
+abundance.weighted = T, runs = 99)
+ses.mpd.result
+write.table(ses.mpd.result1000, file="ses.mpd.result.txt")
+
+
+ses.mntd.result <- ses.mntd(comm, phydist, null.model = "taxa.labels",
+abundance.weighted = T, runs = 99)
+ses.mntd.result
+write.table(ses.mntd.result, file="ses.mntd.result.txt")
+
+#4.3 Phylogenetic beta diversity
+
+comdist.result <- comdist (comm, phydist)
+comdist.result
+write.table(as.matrix(comdist.result), file="comdist.result.txt")
+
+
+library(cluster)
+comdist.clusters <- hclust(comdist.result)
+plot(comdist.clusters)
+
+```
+
